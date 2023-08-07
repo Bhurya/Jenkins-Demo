@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-application
+spec:
+  selector:
+    matchLabels:
+      app: jenkins-application
+  template:
+    metadata:
+      labels:
+        app: jenkins-application
+    spec:
+      containers:
+      - name: jenkins-application
+        image: bhurya/jenkins-application:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8282
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-application
+spec:
+  selector:
+    app: jenkins-application
+  ports:
+  - port: 80
+    targetPort: 8282
+type: NodePort
+
+
